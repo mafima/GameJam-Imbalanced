@@ -69,6 +69,7 @@ public class ConvictionController : MonoBehaviour {
         GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
         GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * 25);
+        RenderSettings.fogEndDistance += level * 10;
 
         if (good) {
             badLvl++;
