@@ -40,7 +40,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
         fps = GetComponent<FirstPersonController>();
         ikControl = GetComponentInChildren<IKControl>();
         //score = GetComponent<PlayerScore>();
-        healthSlider = GameObject.FindGameObjectWithTag("Screen").GetComponentInChildren<Slider>();
+        healthSlider = transform.Find("MainUI").Find("GUI").Find("HealthSlider").GetComponent<Slider>();
         damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>();
         currentHealth.Value = startingHealth;
         healthSlider.value = currentHealth.Value;
@@ -58,6 +58,13 @@ public class PlayerHealth : Photon.MonoBehaviour {
         if (isSinking) {
             transform.Translate(Vector3.down * sinkSpeed * Time.deltaTime);
         }
+    }
+
+    public void GainMaxHealth(int amount) {
+        startingHealth += amount;
+        currentHealth.Value = startingHealth;
+        healthSlider.maxValue = startingHealth;
+        healthSlider.value = currentHealth.Value;
     }
 
     // The RPC function to let the player take damage

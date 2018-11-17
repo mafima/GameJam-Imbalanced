@@ -17,7 +17,7 @@ public class Testing : MonoBehaviour {
         if (Input.GetKeyDown("q")) {
             cc.GenerateConviction(true, 5);
         }
-        if (Input.GetKeyDown("w")) {
+        if (Input.GetKeyDown("e")) {
             cc.GenerateConviction(false, 5);
         }
     }

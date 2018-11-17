@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class ConvictionController : MonoBehaviour {
 
@@ -63,6 +64,12 @@ public class ConvictionController : MonoBehaviour {
         goodness = badness = 0;
         level++;
         levelText.text = level.ToString();
+        transform.localScale *= 1.5f;
+        GetComponent<FirstPersonController>().m_RunSpeed *= 1.35f;
+        GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
+        GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
+        GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * 25);
+
         if (good) {
             badLvl++;
             toBeTransformed.Enqueue(transformTime * goodLvl);
@@ -70,7 +77,7 @@ public class ConvictionController : MonoBehaviour {
             if (badLvl >= goodLvl + 3) {
                 badSlider.transform.Find("Background").GetComponent<Image>().color = sliderGlowColor;
             } else {
-                badSlider.transform.Find("Background").GetComponent<Image>().color = sliderBgColor;
+                goodSlider.transform.Find("Background").GetComponent<Image>().color = sliderBgColor;
             }
         } else {
             goodLvl++;
@@ -79,7 +86,7 @@ public class ConvictionController : MonoBehaviour {
             if (goodLvl >= badLvl + 3) {
                 goodSlider.transform.Find("Background").GetComponent<Image>().color = sliderGlowColor;
             } else {
-                goodSlider.transform.Find("Background").GetComponent<Image>().color = sliderBgColor;
+                badSlider.transform.Find("Background").GetComponent<Image>().color = sliderBgColor;
             }
         }
         GenerateConviction(good, 25);
@@ -91,11 +98,11 @@ public class ConvictionController : MonoBehaviour {
         }
         float next = toBeTransformed.Dequeue();
         if (next > 0f) {
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            //gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
             StartCoroutine(TransformBack(next));
         } else {
             next *= -1f;
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+            //gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
             StartCoroutine(TransformBack(next));
         }
     }
@@ -103,7 +110,7 @@ public class ConvictionController : MonoBehaviour {
     IEnumerator TransformBack(float timer) {
         transformed = true;
         yield return new WaitForSeconds(timer);
-        gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+        //gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
         transformed = false;
         TransformationQueuer();
     }
