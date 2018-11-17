@@ -20,7 +20,7 @@ public class WeaponUpd : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(weaponSystem.weapon!=null)return;
-		
+
 			if(lastweapon==null && weaponSystem.weapon.id != lastweapon.id){
 				if(lastweapon.id>=0)weapons.GetChild(lastweapon.id).gameObject.SetActive(false);
 				weapons.GetChild(weaponSystem.weapon.id).gameObject.SetActive(true);
