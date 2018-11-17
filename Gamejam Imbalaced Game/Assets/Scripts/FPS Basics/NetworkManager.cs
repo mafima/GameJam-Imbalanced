@@ -125,6 +125,8 @@ public class NetworkManager : Photon.MonoBehaviour {
     void OnPhotonPlayerDisconnected(PhotonPlayer other) {
         if (photonView.isMine)
             AddMessage("Player " + other.NickName + " Left Game.");
+
+		EnemyManager.UpdatePlayers();
     }
 
     // Synchronize data on the network
