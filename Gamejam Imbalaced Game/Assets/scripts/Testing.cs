@@ -14,6 +14,7 @@ public class Testing : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(!cc)return;
         if (Input.GetKeyDown("q")) {
             cc.GenerateConviction(true, 5);
         }
