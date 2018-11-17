@@ -18,6 +18,8 @@ public class GunShooting : Photon.MonoBehaviour {
     private LineRenderer gunLine;
     private AudioSource gunAudio;
 
+    public AudioClip standardSound;
+
     // Called when script awake in editor
     void Awake() {
         shootableMask = LayerMask.GetMask("Shootable");
@@ -35,6 +37,8 @@ public class GunShooting : Photon.MonoBehaviour {
 
             // RPC call every client "Shoot" function
             if (shooting && timer >= timeBetweenBullets && Time.timeScale != 0) {
+                gunAudio.clip = (weapn && weapn.firesounds.Length > 0) ? 
+                weapn.firesounds[Random.Range(0,weapn.firesounds.Length)] : standardSound;
                 GetComponent<PhotonView>().RPC("Shoot", PhotonTargets.All);
                 if(anim.GetBool("Firing"))anim.SetTrigger("FiringTrigger");
             }
@@ -53,9 +57,7 @@ public class GunShooting : Photon.MonoBehaviour {
     void Shoot() {
         timer = 0.0f;
 
-        AudioClip audioClip = gunAudio.clip;
-        if(weapn && weapn.firesounds.Length > 0) audioClip = weapn.firesounds[Random.Range(0,weapn.firesounds.Length)];
-        gunAudio.PlayOneShot(audioClip);
+        gunAudio.PlayOneShot(gunAudio.clip);
 
         //if(weapn.firesounds.Length>0)gunAudio.PlayOneShot(weapn.firesounds[0]);
         //gunAudio.Play();
