@@ -22,6 +22,8 @@ public class ConvictionController : Photon.MonoBehaviour {
     private int goodLvl = 1;
     private int badLvl = 1;
 
+    [SerializeField] int bonusMaxHP = 25;
+
     bool transformed = false;
     Queue<float> toBeTransformed = new Queue<float>();
 
@@ -74,7 +76,7 @@ public class ConvictionController : Photon.MonoBehaviour {
         GetComponent<FirstPersonController>().m_RunSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
-        GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * 25);
+        GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * bonusMaxHP);
         RenderSettings.fogEndDistance += level * 10;
 
         if (good) {
