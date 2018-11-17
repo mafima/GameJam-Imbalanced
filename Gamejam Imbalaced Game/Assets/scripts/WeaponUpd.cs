@@ -22,8 +22,9 @@ public class WeaponUpd : Photon.MonoBehaviour {
 		if(weapon==null)return;
 		int id = weapon.id;
 		if(id != lastweapon.id){
-
-				if(lastweapon && lastweapon.id>=0){
+				//if(lastweapon.id>=localWeapons.childCount)lastweapon=null;
+				if(lastweapon && lastweapon.id>=0 && lastweapon.id < localWeapons.childCount){
+					//Debug.Log("weaponid: " +id);
 					if (onlineWeapons)onlineWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
 					if (localWeapons)localWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
 					}
