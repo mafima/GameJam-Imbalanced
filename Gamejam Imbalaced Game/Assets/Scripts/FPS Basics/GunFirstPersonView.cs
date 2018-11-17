@@ -4,8 +4,9 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GunFirstPersonView : MonoBehaviour {
 
-    public float timeBetweenBullets = 0.2f;
-    public float range = 100.0f;
+public Weapon weapon;
+    float timeBetweenBullets = 0.2f;
+     float range = 100.0f;
     public Animator anim;
 
     private float timer;
@@ -27,7 +28,8 @@ public class GunFirstPersonView : MonoBehaviour {
         bool shooting = CrossPlatformInputManager.GetButton("Fire1");
 
         if (shooting && timer >= timeBetweenBullets && Time.timeScale != 0) {
-            Shoot();
+
+        Shoot();
         }
 
         anim.SetBool("Firing", shooting);
@@ -40,6 +42,9 @@ public class GunFirstPersonView : MonoBehaviour {
 
     // Shoot!
     void Shoot() {
+        // set weapon depending stuff:
+        timeBetweenBullets = 1f/((float)weapon.AtkPerSec+0.001f);
+        range=weapon.range;
         timer = 0.0f;
         gunParticles.Stop();
         gunParticles.Play();

@@ -4,9 +4,10 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GunShooting : Photon.MonoBehaviour {
 
-    public IntVariable damagePerShot;
-    public float timeBetweenBullets = 0.2f;
-    public float range = 100.0f;
+    public Weapon weapon;
+    int damagePerShot;
+    float timeBetweenBullets = 0.2f;
+    float range = 100.0f;
     public Animator anim;
 
     private float timer;
@@ -56,13 +57,18 @@ public class GunShooting : Photon.MonoBehaviour {
         gunParticles.Stop();
         gunParticles.Play();
 
+        // set weapon depending stuff:
+        damagePerShot=(int)weapon.damage;
+        timeBetweenBullets = 1f/((float)weapon.AtkPerSec+0.001f);
+        range=weapon.range;
+
         // Only call when is the client itself
         if (photonView.isMine) {
             shootRay = Camera.main.ScreenPointToRay(new Vector3((Screen.width * 0.5f), (Screen.height * 0.5f), 0f));
             if (Physics.Raycast(shootRay, out shootHit, range, shootableMask)) {
                 switch (shootHit.transform.gameObject.tag) {
                 case "Player":
-                    shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, damagePerShot.Value, PhotonNetwork.player.NickName);
+                    shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, damagePerShot, PhotonNetwork.player.NickName);
                     PhotonNetwork.Instantiate("impacts/impactFlesh", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
                     break;
                 case "Metal":
