@@ -15,6 +15,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
     private float smoothing = 10.0f;
     private float dampTime = 0.06f;
 
+
+    public Transform weapon,cameraweapn,playermodel;
     // Move game objects to another layer
     void MoveToLayer(Transform root, int layer) {
         root.gameObject.layer = layer;
@@ -32,9 +34,9 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
             foreach (Camera camera in GetComponentsInChildren<Camera>()) {
                 camera.enabled = true;
             }
-            MoveToLayer(this.transform.Find("T_Ak-47"), LayerMask.NameToLayer("Hidden"));
-            MoveToLayer(this.transform.Find("FPSMainCamera/F_Ak-47"), LayerMask.NameToLayer("FPSGun"));
-            MoveToLayer(this.transform.Find("PlayerModel"), LayerMask.NameToLayer("Hidden"));
+            MoveToLayer(weapon?weapon :this.transform.Find("Weapon"), LayerMask.NameToLayer("Hidden"));
+            MoveToLayer(cameraweapn?cameraweapn :this.transform.Find("FPSMainCamera/weapon"), LayerMask.NameToLayer("FPSGun"));
+            MoveToLayer(playermodel?playermodel:this.transform.Find("PlayerModel"), LayerMask.NameToLayer("Hidden"));
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             foreach (GameObject player in players) {
                 if (player == gameObject) continue;
