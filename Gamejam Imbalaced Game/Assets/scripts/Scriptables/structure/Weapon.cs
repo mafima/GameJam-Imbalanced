@@ -5,6 +5,13 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Weapon : ScriptableObject {
 	public int id;
-	public float damage=20, AtkPerSec=1, range=100;
+	public float damage=20, AtkPerSec=5, range=100;
 	public GameObject look;
+
+	public void setWeapon(Weapon newWeapon){
+		id=newWeapon.id;
+		damage=newWeapon.damage;
+		AtkPerSec=newWeapon.AtkPerSec;
+		range=newWeapon.range;
+	}
 }

@@ -5,9 +5,10 @@ using UnityEngine;
 public class WeaponSystem : Photon.MonoBehaviour {
 
 	public Weapon weapon;
+	//public int id;
 	// Use this for initialization
 	void Start () {
-		
+		if(! photonView.isMine) this.enabled=false;
 	}
 	
 	// Update is called once per frame

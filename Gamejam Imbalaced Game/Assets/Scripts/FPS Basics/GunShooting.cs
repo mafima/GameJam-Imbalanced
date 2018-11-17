@@ -59,7 +59,7 @@ public class GunShooting : Photon.MonoBehaviour {
 
         // set weapon depending stuff:
         damagePerShot=(int)weapon.damage;
-        timeBetweenBullets = 1f/(weapon.AtkPerSec+0.001f);
+        timeBetweenBullets = 1f/((float)weapon.AtkPerSec+0.001f);
         range=weapon.range;
 
         // Only call when is the client itself
