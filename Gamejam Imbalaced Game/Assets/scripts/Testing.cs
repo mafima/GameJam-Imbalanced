@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Testing : MonoBehaviour {
+public class Testing : Photon.MonoBehaviour {
 
     ConvictionController cc;
 
 	// Use this for initialization
 	void Start () {
-        cc = GameObject.FindGameObjectWithTag("Player").GetComponent<ConvictionController>();
+        cc = GetComponent<ConvictionController>();
 
     }
 	
 	// Update is called once per frame
 	void Update () {
+        if (!photonView.isMine) {
+            return;
+        }
         if(!cc)return;
         if (Input.GetKeyDown("q")) {
             cc.GenerateConviction(true, 5);

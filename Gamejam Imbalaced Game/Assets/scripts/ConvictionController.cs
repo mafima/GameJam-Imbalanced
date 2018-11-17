@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
-public class ConvictionController : MonoBehaviour {
+public class ConvictionController : Photon.MonoBehaviour {
 
     private float transformTime = 2f;
 
@@ -22,10 +22,18 @@ public class ConvictionController : MonoBehaviour {
     private int goodLvl = 1;
     private int badLvl = 1;
 
+    [SerializeField] int bonusMaxHP = 25;
+
     bool transformed = false;
     Queue<float> toBeTransformed = new Queue<float>();
 
     private void Start() {
+        if (!photonView.isMine) {
+            goodSlider.transform.parent.parent.gameObject.SetActive(false);
+            enabled = false;
+            return;
+        }
+
         goodSlider.maxValue = 1f;
         goodSlider.value = 0f;
         goodSlider.wholeNumbers = false;
@@ -68,7 +76,7 @@ public class ConvictionController : MonoBehaviour {
         GetComponent<FirstPersonController>().m_RunSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
-        GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * 25);
+        GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * bonusMaxHP);
         RenderSettings.fogEndDistance += level * 10;
 
         if (good) {

@@ -15,5 +15,7 @@ public class Weapon : ScriptableObject {
 		damage=newWeapon.damage;
 		AtkPerSec=newWeapon.AtkPerSec;
 		range=newWeapon.range;
+		firesounds=newWeapon.firesounds;
+		look=newWeapon.look;
 	}
 }

@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction : MonoBehaviour {
+public class PlayerInteraction : Photon.MonoBehaviour {
 
     [SerializeField] Transform mainPlayerCam;
     ConvictionController cc;
 
     private void Start() {
+        if (!photonView.isMine) {
+            enabled = false;
+            return;
+        }
         cc = GetComponent<ConvictionController>();
+
     }
 
     void Update () {
