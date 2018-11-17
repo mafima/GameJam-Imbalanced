@@ -99,10 +99,12 @@ public class ConvictionController : MonoBehaviour {
         float next = toBeTransformed.Dequeue();
         if (next > 0f) {
             //gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            GetComponent<FirstPersonController>().m_GravityMultiplier = 0f;
             StartCoroutine(TransformBack(next));
         } else {
             next *= -1f;
             //gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+            GetComponent<PlayerHealth>().invincible = true;
             StartCoroutine(TransformBack(next));
         }
     }
@@ -111,6 +113,8 @@ public class ConvictionController : MonoBehaviour {
         transformed = true;
         yield return new WaitForSeconds(timer);
         //gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+        GetComponent<FirstPersonController>().m_GravityMultiplier = 2f;
+        GetComponent<PlayerHealth>().invincible = false;
         transformed = false;
         TransformationQueuer();
     }

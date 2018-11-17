@@ -8,7 +8,7 @@ public class NetworkManager : Photon.MonoBehaviour {
     [SerializeField] Text connectionText;
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] Camera sceneCamera;
-    [SerializeField] GameObject[] playerModel;
+    [SerializeField] GameObject playerModel;
     [SerializeField] GameObject serverWindow;
     [SerializeField] GameObject messageWindow;
     [SerializeField] GameObject sightImage;
@@ -83,9 +83,8 @@ public class NetworkManager : Photon.MonoBehaviour {
 
         messageWindow.SetActive(true);
         sightImage.SetActive(true);
-        int playerIndex = Random.Range(0, playerModel.Length);
         int spawnIndex = Random.Range(0, spawnPoints.Length);
-        player = PhotonNetwork.Instantiate(playerModel[playerIndex].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
+        player = PhotonNetwork.Instantiate(playerModel.name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
 
         player.GetComponent<PlayerHealth>().RespawnMe += StartSpawnProcess;
         player.GetComponent<PlayerHealth>().SendNetworkMessage += AddMessage;

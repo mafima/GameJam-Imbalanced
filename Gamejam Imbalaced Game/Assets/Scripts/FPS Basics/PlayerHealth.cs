@@ -30,7 +30,9 @@ public class PlayerHealth : Photon.MonoBehaviour {
     private bool isDead;
     private bool isSinking;
 	private bool damaged;
-	//PlayerScore score;
+    //PlayerScore score;
+
+    public bool invincible = false;
 
     // Called when script awake in editor
     void Awake() {
@@ -71,6 +73,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
     [PunRPC]
     public void TakeDamage(int amount, string enemyName) {
         if (isDead) return;
+        if (invincible) return;
 
         currentHealth.Value -= amount;
 
