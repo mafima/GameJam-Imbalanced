@@ -30,7 +30,10 @@ public class PlayerHealth : Photon.MonoBehaviour {
     private bool isDead;
     private bool isSinking;
 	private bool damaged;
-	//PlayerScore score;
+    //PlayerScore score;
+
+    public bool invincible = false;
+    public Transform Ui;
 
     // Called when script awake in editor
     void Awake() {
@@ -40,8 +43,9 @@ public class PlayerHealth : Photon.MonoBehaviour {
         fps = GetComponent<FirstPersonController>();
         ikControl = GetComponentInChildren<IKControl>();
         //score = GetComponent<PlayerScore>();
-        healthSlider = transform.Find("MainUI").Find("GUI").Find("HealthSlider").GetComponent<Slider>();
-        damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>();
+        //healthSlider = GetComponentInChildren<Slider>(); // TODO REMOVE
+        if(healthSlider==null)healthSlider = transform.Find("MainUI").Find("GUI").Find("HealthSlider").GetComponent<Slider>();
+        damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>(); //GameObject.FindGameObjectWithTag("Screen")
         currentHealth.Value = startingHealth;
         healthSlider.value = currentHealth.Value;
     }
@@ -71,6 +75,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
     [PunRPC]
     public void TakeDamage(int amount, string enemyName) {
         if (isDead) return;
+        if (invincible) return;
 
         currentHealth.Value -= amount;
 

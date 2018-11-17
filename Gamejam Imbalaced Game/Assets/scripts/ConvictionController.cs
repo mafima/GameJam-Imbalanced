@@ -18,7 +18,7 @@ public class ConvictionController : MonoBehaviour {
     private Color sliderBgColor = new Color(0.674f, 0.937f, 1f);
     private Color sliderGlowColor = new Color(0.968f, 0.986f, 0.219f);
 
-    private int level = 1;
+    public int level = 1;
     private int goodLvl = 1;
     private int badLvl = 1;
 
@@ -69,6 +69,7 @@ public class ConvictionController : MonoBehaviour {
         GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
         GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * 25);
+        RenderSettings.fogEndDistance += level * 10;
 
         if (good) {
             badLvl++;
@@ -99,10 +100,12 @@ public class ConvictionController : MonoBehaviour {
         float next = toBeTransformed.Dequeue();
         if (next > 0f) {
             //gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            GetComponent<FirstPersonController>().m_GravityMultiplier = 0f;
             StartCoroutine(TransformBack(next));
         } else {
             next *= -1f;
             //gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+            GetComponent<PlayerHealth>().invincible = true;
             StartCoroutine(TransformBack(next));
         }
     }
@@ -111,6 +114,8 @@ public class ConvictionController : MonoBehaviour {
         transformed = true;
         yield return new WaitForSeconds(timer);
         //gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+        GetComponent<FirstPersonController>().m_GravityMultiplier = 2f;
+        GetComponent<PlayerHealth>().invincible = false;
         transformed = false;
         TransformationQueuer();
     }
