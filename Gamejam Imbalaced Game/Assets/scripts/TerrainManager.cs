@@ -37,12 +37,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     Vector2 pos = from;
                     pos.x += Random.value * 500f;
                     pos.y += Random.value * 500f;
-                    //SpawnNewObject(smallAssets[index], pos, 0);
-                    photonView.RPC("SpawnNewObject", 
-                        PhotonTargets.All, 
-                        smallAssets[index].transform.name, 
-                        pos, 0);
-                    //PhotonNetwork.Instantiate("smallAsset", pos, Quaternion.identity, 0);
+                    photonView.RPC("SpawnNewObject", PhotonTargets.All, smallAssets[index].name, pos, 0);
                 }
 
                 amount = Random.Range(4, 15);
@@ -51,9 +46,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     Vector2 pos = from;
                     pos.x += Random.value * 500f;
                     pos.y += Random.value * 500f;
-                    //SpawnNewObject(smallAssets[index], pos, 0);
-                    photonView.RPC("SpawnNewObject", PhotonTargets.All, mediumAssets[index].name, pos, 0);
-                    //PhotonNetwork.Instantiate("smallAsset", pos, Quaternion.identity, 0);
+                    photonView.RPC("SpawnNewObject", PhotonTargets.All, mediumAssets[index].name, pos, 1);
                 }
 
                 amount = Random.Range(1, 5);
@@ -62,9 +55,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     Vector2 pos = from;
                     pos.x += Random.value * 500f;
                     pos.y += Random.value * 500f;
-                    //SpawnNewObject(smallAssets[index], pos, 0);
-                    photonView.RPC("SpawnNewObject", PhotonTargets.All, bigAssets[index].name, pos, 0);
-                    //PhotonNetwork.Instantiate("smallAsset", pos, Quaternion.identity, 0);
+                    photonView.RPC("SpawnNewObject", PhotonTargets.All, bigAssets[index].name, pos, 2);
                 }
 
                 yield return new WaitForSeconds(0.01f);
