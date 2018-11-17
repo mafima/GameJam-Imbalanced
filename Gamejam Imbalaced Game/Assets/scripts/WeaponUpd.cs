@@ -7,7 +7,7 @@ public class WeaponUpd : MonoBehaviour {
 	public WeaponSystem weaponSystem;
 	Weapon lastweapon;
 
-	public Transform weapons;
+	public Transform onlineWeapons,localWeapons;
 
 	// Use this for initialization
 	void Start () {
@@ -20,10 +20,14 @@ public class WeaponUpd : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(weaponSystem.weapon!=null)return;
-
+			int id = weaponSystem.weapon.id;
 			if(lastweapon==null && weaponSystem.weapon.id != lastweapon.id){
-				if(lastweapon.id>=0)weapons.GetChild(lastweapon.id).gameObject.SetActive(false);
-				weapons.GetChild(weaponSystem.weapon.id).gameObject.SetActive(true);
+				if(lastweapon.id>=0){
+					onlineWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
+					localWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
+					}
+				localWeapons.GetChild(id).gameObject.SetActive(true);
+				onlineWeapons.GetChild(id).gameObject.SetActive(true);
 				lastweapon=weaponSystem.weapon;
 			}
 		
