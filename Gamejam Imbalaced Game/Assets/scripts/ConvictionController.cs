@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
-public class ConvictionController : MonoBehaviour {
+public class ConvictionController : Photon.MonoBehaviour {
 
     private float transformTime = 2f;
 
@@ -26,6 +26,12 @@ public class ConvictionController : MonoBehaviour {
     Queue<float> toBeTransformed = new Queue<float>();
 
     private void Start() {
+        if (!photonView.isMine) {
+            goodSlider.transform.parent.parent.gameObject.SetActive(false);
+            enabled = false;
+            return;
+        }
+
         goodSlider.maxValue = 1f;
         goodSlider.value = 0f;
         goodSlider.wholeNumbers = false;
