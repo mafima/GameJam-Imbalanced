@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponUpd : MonoBehaviour {
+public class WeaponUpd : Photon.MonoBehaviour {
 
 	public Weapon weapon,lastweapon;
 
@@ -10,7 +10,7 @@ public class WeaponUpd : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(weapon ==null) this.enabled=false;
+		if(!GetComponent<PhotonView>().isMine && weapon ==null) this.enabled=false;
 		else{
 			//lastweapon=weaponSystem.weapon;
 		}
