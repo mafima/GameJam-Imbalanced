@@ -33,6 +33,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
     //PlayerScore score;
 
     public bool invincible = false;
+    public Transform Ui;
 
     // Called when script awake in editor
     void Awake() {
@@ -42,9 +43,9 @@ public class PlayerHealth : Photon.MonoBehaviour {
         fps = GetComponent<FirstPersonController>();
         ikControl = GetComponentInChildren<IKControl>();
         //score = GetComponent<PlayerScore>();
-        healthSlider = GetComponentInChildren<Slider>(); // TODO REMOVE
+        //healthSlider = GetComponentInChildren<Slider>(); // TODO REMOVE
         healthSlider = transform.Find("MainUI").Find("GUI").Find("HealthSlider").GetComponent<Slider>();
-        damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>();
+        damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>(); //GameObject.FindGameObjectWithTag("Screen")
         currentHealth.Value = startingHealth;
         healthSlider.value = currentHealth.Value;
     }
