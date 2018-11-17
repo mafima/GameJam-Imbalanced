@@ -14,7 +14,12 @@ public class TerrainManager : Photon.MonoBehaviour {
     Transform smallAssetsT, mediumAssetsT, bigAssetsT;
 
     // Use this for initialization
-    public void Make () {
+    public void Make() {
+        StartCoroutine(Making());
+    }
+
+
+    IEnumerator Making() { 
         smallAssetsT = new GameObject("SmallAssets").transform;
         mediumAssetsT = new GameObject("MediumAssets").transform;
         bigAssetsT = new GameObject("BigAssets").transform;
@@ -62,9 +67,16 @@ public class TerrainManager : Photon.MonoBehaviour {
                     photonView.RPC("SpawnNewObject", PhotonTargets.All, bigAssets[index].name, pos, 0);
                     //PhotonNetwork.Instantiate("smallAsset", pos, Quaternion.identity, 0);
                 }
+
+                yield return new WaitForSeconds(0.1f);
             }
         }
-        
+        yield return null;
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player")) {
+            Vector3 dest = player.transform.position;
+            dest.y = 10f;
+            player.transform.position = dest;
+        }
 	}
 
     [PunRPC]

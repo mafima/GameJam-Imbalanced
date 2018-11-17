@@ -62,7 +62,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         connectionText.text = "";
         StartSpawnProcess(0.0f);
 
-        if (PhotonNetwork.playerList.Length >= 2 && terrainMaker) {
+        if (PhotonNetwork.playerList.Length >= 1 && terrainMaker) {
             Debug.Log("Making");
             terrainMaker.Make();
         }
