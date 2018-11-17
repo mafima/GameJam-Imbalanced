@@ -4,7 +4,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GunShooting : Photon.MonoBehaviour {
 
-    public Weapon weapon;
+    public Weapon weapn;
     int damagePerShot;
     float timeBetweenBullets = 0.2f;
     float range = 100.0f;
@@ -36,6 +36,7 @@ public class GunShooting : Photon.MonoBehaviour {
             // RPC call every client "Shoot" function
             if (shooting && timer >= timeBetweenBullets && Time.timeScale != 0) {
                 GetComponent<PhotonView>().RPC("Shoot", PhotonTargets.All);
+                if(anim.GetBool("Firing"))anim.SetTrigger("FiringTrigger");
             }
 
             anim.SetBool("Firing", shooting);
@@ -52,15 +53,19 @@ public class GunShooting : Photon.MonoBehaviour {
     void Shoot() {
         timer = 0.0f;
 
-        gunAudio.Play();
+        gunAudio.PlayOneShot( weapn && weapn.firesounds.Length > 0 ? 
+        (weapn.firesounds[Random.Range(0,weapn.firesounds.Length)]) : gunAudio.clip);
+
+        //if(weapn.firesounds.Length>0)gunAudio.PlayOneShot(weapn.firesounds[0]);
+        //gunAudio.Play();
 
         gunParticles.Stop();
         gunParticles.Play();
 
         // set weapon depending stuff:
-        damagePerShot=(int)weapon.damage;
-        timeBetweenBullets = 1f/((float)weapon.AtkPerSec+0.001f);
-        range=weapon.range;
+        damagePerShot=(int) weapn.damage;
+        timeBetweenBullets = 1f/((float)weapn.AtkPerSec+0.001f);
+        range=weapn.range;
 
         // Only call when is the client itself
         if (photonView.isMine) {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponUpd : MonoBehaviour {
+public class WeaponUpd : Photon.MonoBehaviour {
 
 	public Weapon weapon,lastweapon;
 
@@ -10,7 +10,8 @@ public class WeaponUpd : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(weapon ==null) this.enabled=false;
+		PhotonView view = GetComponent<PhotonView>();
+		if(view && !view.isMine && weapon ==null) this.enabled=false;
 		else{
 			//lastweapon=weaponSystem.weapon;
 		}
@@ -23,11 +24,11 @@ public class WeaponUpd : MonoBehaviour {
 		if(id != lastweapon.id){
 
 				if(lastweapon && lastweapon.id>=0){
-					onlineWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
-					localWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
+					if (onlineWeapons)onlineWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
+					if (localWeapons)localWeapons.GetChild(lastweapon.id).gameObject.SetActive(false);
 					}
-				if (localWeapons.childCount>=id)localWeapons.GetChild(id).gameObject.SetActive(true);
-				if (onlineWeapons.childCount>=id)onlineWeapons.GetChild(id).gameObject.SetActive(true);
+				if (localWeapons.childCount>id)localWeapons.GetChild(id).gameObject.SetActive(true);
+				if (onlineWeapons.childCount>id)onlineWeapons.GetChild(id).gameObject.SetActive(true);
 
 				lastweapon.id=id;
 		}
