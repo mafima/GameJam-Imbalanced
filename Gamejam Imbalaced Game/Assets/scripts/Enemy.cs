@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour {
 	public Transform[] playerTf;
 	float dist = 0;
 	int nearestPlayer;
+	Transform target;
 
 	// Use this for initialization
 	void Start () {
@@ -21,10 +22,10 @@ public class Enemy : MonoBehaviour {
 		}
 
 		enemyRb = GetComponent<Rigidbody> ();
+		InvokeRepeating ("SearchTarget", 0f, 2f);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void SearchTarget () {
 
 		for (int i = 0; i < playerTf.Length; i++) {
 			if (dist == 0) {
@@ -35,8 +36,18 @@ public class Enemy : MonoBehaviour {
 				nearestPlayer = i;
 			}
 		}
-			
-		enemyRb.AddForce((playerTf[nearestPlayer].position.x - enemyTf.position.x), 0, (playerTf[nearestPlayer].position.z - enemyTf.position.z));
+
+		target = playerTf [nearestPlayer];
+	}
+
+	void FixedUpdate() {
+	
+		if (target == null) {
+			SearchTarget ();
+		}
+
+		enemyRb.AddForce((target.position.x - enemyTf.position.x), 0, (target.position.z - enemyTf.position.z));
 	
 	}
+
 }
