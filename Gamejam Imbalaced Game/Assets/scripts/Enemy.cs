@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		enemyTf = GameObject.FindGameObjectWithTag ("Enemy").GetComponent<Transform>(); 
+		enemyTf = GetComponent<Transform>(); 
 		players = GameObject.FindGameObjectsWithTag ("Player");
 		playerTf = new Transform[players.Length];
 		for (int i = 0; i < players.Length; i++) {
