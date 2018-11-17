@@ -16,10 +16,10 @@ public class WeaponSystem : Photon.MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.E) && weapon.id < allweapons.Length+1){
+		if(Input.GetKeyDown(KeyCode.E) && (weapon.id+1) < allweapons.Length){
 			weapon.id++;
 			weapon.setWeapon(allweapons[weapon.id]);
-		} else if(Input.GetKeyDown(KeyCode.Q) && weapon.id >0){
+		} else if(Input.GetKeyDown(KeyCode.Q) && weapon.id > 0){
 			weapon.id--;
 			weapon.setWeapon(allweapons[weapon.id]);
 		} 
