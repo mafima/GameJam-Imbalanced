@@ -12,7 +12,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
     public event SendMessage SendNetworkMessage;
 
     public int startingHealth = 100;
-    public int currentHealth;
+    public IntVariable currentHealth;
     public float sinkSpeed = 0.12f;
     public Slider healthSlider;
     public Image damageImage;
@@ -42,8 +42,8 @@ public class PlayerHealth : Photon.MonoBehaviour {
         //score = GetComponent<PlayerScore>();
         healthSlider = GameObject.FindGameObjectWithTag("Screen").GetComponentInChildren<Slider>();
         damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>();
-        currentHealth = startingHealth;
-        healthSlider.value = currentHealth;
+        currentHealth.Value = startingHealth;
+        healthSlider.value = currentHealth.Value;
     }
 
     // Update is called once per frame
@@ -65,11 +65,11 @@ public class PlayerHealth : Photon.MonoBehaviour {
     public void TakeDamage(int amount, string enemyName) {
         if (isDead) return;
 
-        currentHealth -= amount;
+        currentHealth.Value -= amount;
 
         if (photonView.isMine) {
             damaged = true;
-            healthSlider.value = currentHealth;
+            healthSlider.value = currentHealth.Value;
         }
 
         anim.SetTrigger("IsHurt");
@@ -77,7 +77,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
         playerAudio.clip = hurtClip;
         playerAudio.Play();
 
-        if (currentHealth <= 0) {
+        if (currentHealth.Value <= 0) {
             Death(enemyName);
         }
     }
@@ -134,9 +134,9 @@ public class PlayerHealth : Photon.MonoBehaviour {
     // Synchronize data on the network
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
-            stream.SendNext(currentHealth);
+            stream.SendNext(currentHealth.Value);
         } else {
-            currentHealth = (int)stream.ReceiveNext();
+            currentHealth.Value = (int)stream.ReceiveNext();
         }
     }
 
