@@ -68,7 +68,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     //PhotonNetwork.Instantiate("smallAsset", pos, Quaternion.identity, 0);
                 }
 
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
             }
         }
         yield return null;
