@@ -42,6 +42,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
         fps = GetComponent<FirstPersonController>();
         ikControl = GetComponentInChildren<IKControl>();
         //score = GetComponent<PlayerScore>();
+        healthSlider = GetComponentInChildren<Slider>(); // TODO REMOVE
         healthSlider = transform.Find("MainUI").Find("GUI").Find("HealthSlider").GetComponent<Slider>();
         damageImage = GameObject.FindGameObjectWithTag("Screen").transform.Find("DamageImage").GetComponent<Image>();
         currentHealth.Value = startingHealth;

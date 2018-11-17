@@ -16,6 +16,7 @@ public class NetworkManager : Photon.MonoBehaviour {
     [SerializeField] InputField roomName;
     [SerializeField] InputField roomList;
     [SerializeField] InputField messagesLog;
+    [SerializeField] TerrainManager terrainMaker;
 
     private GameObject player;
     private Queue<string> messages;
@@ -60,6 +61,11 @@ public class NetworkManager : Photon.MonoBehaviour {
         StopCoroutine ("UpdateConnectionState");
         connectionText.text = "";
         StartSpawnProcess(0.0f);
+
+        if (PhotonNetwork.playerList.Length >= 1) {
+            Debug.Log("Making");
+            terrainMaker.Make();
+        }
     }
 
     // The button click callback function for join room
