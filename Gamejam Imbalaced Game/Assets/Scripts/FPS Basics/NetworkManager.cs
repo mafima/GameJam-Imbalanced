@@ -17,6 +17,7 @@ public class NetworkManager : Photon.MonoBehaviour {
     [SerializeField] InputField roomList;
     [SerializeField] InputField messagesLog;
     [SerializeField] TerrainManager terrainMaker;
+    [SerializeField] int playerCount;
 
     private GameObject player;
     private Queue<string> messages;
@@ -62,7 +63,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         connectionText.text = "";
         StartSpawnProcess(0.0f);
 
-        if (PhotonNetwork.playerList.Length >= 1 && terrainMaker) {
+        if (PhotonNetwork.playerList.Length >= playerCount && terrainMaker) {
             Debug.Log("Making");
             terrainMaker.Make();
         }

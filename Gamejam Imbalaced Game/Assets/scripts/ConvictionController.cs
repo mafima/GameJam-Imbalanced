@@ -18,7 +18,7 @@ public class ConvictionController : MonoBehaviour {
     private Color sliderBgColor = new Color(0.674f, 0.937f, 1f);
     private Color sliderGlowColor = new Color(0.968f, 0.986f, 0.219f);
 
-    private int level = 1;
+    public int level = 1;
     private int goodLvl = 1;
     private int badLvl = 1;
 
