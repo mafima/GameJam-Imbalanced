@@ -16,11 +16,13 @@ public class scoregetter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		plist = GameObject.FindGameObjectsWithTag("Player");
-		string tex="";
-		foreach(GameObject p in plist)tex+= 
-		p.transform.FindChild("NameCanvas").GetChild(0).GetComponent<NameTag>().name
+		if(plist.Length<=0)return;
+
+		string final = "";
+		foreach(GameObject p in plist)final+= 
+		p.transform.Find("NameCanvas").GetChild(0).GetComponent<NameTag>().name
 		+ " Level "+ p.GetComponent<ConvictionController>().level.Value.ToString("0.0") +" "
 		+ " Health "+ p.GetComponent<PlayerHealth>().currentHealth.Value.ToString("0.0");
-		t.SetText(tex);
+		t.SetText(final);
 	}
 }
