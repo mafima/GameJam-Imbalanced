@@ -20,7 +20,13 @@ public class TerrainManager : Photon.MonoBehaviour {
 
     Transform smallAssetsT, mediumAssetsT, bigAssetsT, terrainT;
 
-    // Use this for initialization
+    private void Start() {
+        smallAssetsT = new GameObject("SmallAssets").transform;
+        mediumAssetsT = new GameObject("MediumAssets").transform;
+        bigAssetsT = new GameObject("BigAssets").transform;
+        terrainT = new GameObject("Terrains").transform;
+    }
+
     public void Make() {
         photonView.RPC("InitializeLoader", PhotonTargets.All);
         StartCoroutine(Making());
@@ -28,10 +34,6 @@ public class TerrainManager : Photon.MonoBehaviour {
 
 
     IEnumerator Making() { 
-        smallAssetsT = new GameObject("SmallAssets").transform;
-        mediumAssetsT = new GameObject("MediumAssets").transform;
-        bigAssetsT = new GameObject("BigAssets").transform;
-        terrainT = new GameObject("Terrains").GetComponent<Transform>();
 
         for (int i = 0; i < worldSize; i++) {
             for (int j = 0; j < worldSize; j++) {
@@ -77,7 +79,7 @@ public class TerrainManager : Photon.MonoBehaviour {
             player.transform.position = dest;
             player.GetComponent<SceneCleaner>().StartCleaning();
         }
-        loadingParent.gameObject.SetActive(false);
+        photonView.RPC("FinishedLoading", PhotonTargets.All);
 	}
 
     [PunRPC]
@@ -92,6 +94,12 @@ public class TerrainManager : Photon.MonoBehaviour {
     [PunRPC]
     void LoadedPart() {
         loadingSlider.value++;
+    }
+
+    [PunRPC]
+    void FinishedLoading() {
+
+        loadingParent.gameObject.SetActive(false);
     }
 
     [PunRPC]
