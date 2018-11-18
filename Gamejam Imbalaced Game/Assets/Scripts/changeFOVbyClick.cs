@@ -21,7 +21,7 @@ public class changeFOVbyClick : MonoBehaviour {
 
 		lerpto=Mathf.Lerp(lerpto,startFOV,lerpstrengh);
 
-		cam.fieldOfView = Mathf.Lerp(cam.fieldOfView,lerpto,lerpstrengh2);
+		if(cam)cam.fieldOfView = Mathf.Lerp(cam.fieldOfView,lerpto,lerpstrengh2);
 	}
 	public void kick(){
 		lerpto += strengh*weapon.damage;
