@@ -4,6 +4,8 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GunShooting : Photon.MonoBehaviour {
 
+
+    public FloatVar dmgMulti;
     public Weapon weapn;
     int damagePerShot;
     float timeBetweenBullets = 0.2f;
@@ -20,12 +22,15 @@ public class GunShooting : Photon.MonoBehaviour {
 
     public AudioClip standardSound;
 
+    ConvictionController cc;
+
     // Called when script awake in editor
     void Awake() {
         shootableMask = LayerMask.GetMask("Shootable");
         gunParticles = GetComponent<ParticleSystem>();
         gunLine = GetComponent<LineRenderer>();
         gunAudio = GetComponent<AudioSource>();
+        cc = transform.parent.parent.GetComponent<ConvictionController>();
     }
 
     // Update is called once per frame
@@ -76,7 +81,8 @@ public class GunShooting : Photon.MonoBehaviour {
             if (Physics.Raycast(shootRay, out shootHit, range, shootableMask)) {
                 switch (shootHit.transform.gameObject.tag) {
                 case "Player":
-                    shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, damagePerShot, PhotonNetwork.player.NickName);
+                        cc.GenerateConviction(false, damagePerShot);
+                    shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, (int)(damagePerShot * dmgMulti.value), PhotonNetwork.player.NickName);
                     PhotonNetwork.Instantiate("impacts/impactFlesh", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
                     break;
                 case "Enemy":
