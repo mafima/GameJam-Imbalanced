@@ -7,6 +7,7 @@ public class EnemyManager : Photon.MonoBehaviour {
 
 	public static GameObject[] players;
 	public static Transform[] playerTf;
+    [SerializeField] Vector3 spawnpoint;
 	[SerializeField] bool spawn = false;
 	[SerializeField] bool spawnK = false;
 
@@ -31,7 +32,7 @@ public class EnemyManager : Photon.MonoBehaviour {
 			spawn = false;
 		}
 		if (spawnK) {
-			GameObject temp = (GameObject)Instantiate(Resources.Load("Enemies/Knuckles"), new Vector3 (20f, 1f, -3f), Quaternion.identity);
+			GameObject temp = (GameObject)Instantiate(Resources.Load("Enemies/Knuckles"), spawnpoint, Quaternion.identity);
 			spawnK = false;
 		}
 	}
@@ -42,7 +43,7 @@ public class EnemyManager : Photon.MonoBehaviour {
 
 	void SpawnSingleEnemy(string name) {
 		if (PhotonNetwork.playerList.Length > 0) {
-			photonView.RPC ("SpawnEnemy", PhotonTargets.All, name, new Vector3 (20f, 1f, -3f));
+			photonView.RPC ("SpawnEnemy", PhotonTargets.All, name, spawnpoint);
 		}
 	}
 
