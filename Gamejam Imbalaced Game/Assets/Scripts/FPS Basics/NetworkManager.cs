@@ -18,6 +18,7 @@ public class NetworkManager : Photon.MonoBehaviour {
     [SerializeField] InputField messagesLog;
     [SerializeField] TerrainManager terrainMaker;
     [SerializeField] int playerCount;
+    public static int desiredPlayers;
 
     private GameObject player;
     private Queue<string> messages;
@@ -29,6 +30,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         PhotonNetwork.logLevel = PhotonLogLevel.Full;
         PhotonNetwork.ConnectUsingSettings("0.2");
         StartCoroutine("UpdateConnectionState");
+        desiredPlayers = playerCount;
     }
 
     // The coroutine function to update the connection state message
