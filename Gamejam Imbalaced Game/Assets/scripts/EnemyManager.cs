@@ -8,6 +8,7 @@ public class EnemyManager : Photon.MonoBehaviour {
 	public static GameObject[] players;
 	public static Transform[] playerTf;
 	[SerializeField] bool spawn = false;
+	[SerializeField] bool spawnK = false;
 
     public static Queue<GameObject> deadPepegas;
 
@@ -28,6 +29,10 @@ public class EnemyManager : Photon.MonoBehaviour {
 		if (spawn) {
 			SpawnSingleEnemy ("Pepega");
 			spawn = false;
+		}
+		if (spawnK) {
+			GameObject temp = (GameObject)Instantiate(Resources.Load("Enemies/Knuckles"), new Vector3 (20f, 1f, -3f), Quaternion.identity);
+			spawnK = false;
 		}
 	}
 
