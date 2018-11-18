@@ -60,26 +60,31 @@ public class SceneCleaner : MonoBehaviour {
     }
 
     void Clean() {
+        float dist = GetComponent<ConvictionController>().level.Value * cleaningDistance;
         switch (counter) {
             case 0:
-                DisableList(terrains);
+                DisableList(terrains, dist);
                 break;
             case 1:
-                DisableList(smallAssets);
+                if (GetComponent<ConvictionController>().level.Value >= 5)
+                    dist = 0;
+                DisableList(smallAssets, dist);
                 break;
             case 2:
-                DisableList(mediumAssets);
+                if (GetComponent<ConvictionController>().level.Value >= 10)
+                    dist = 0;
+                DisableList(mediumAssets, dist);
                 break;
             case 3:
-                DisableList(bigAssets);
+                DisableList(bigAssets, dist);
                 break;
             default:
                 break;
         }
     }
 
-    void DisableList(GameObject[] list) {
-        float dist = GetComponent<ConvictionController>().level.Value * cleaningDistance;
+    void DisableList(GameObject[] list, float dist) {
+        
         foreach (GameObject obj in list) {
             float xDist, zDist;
             xDist = Mathf.Abs(transform.position.x - obj.transform.position.x);
