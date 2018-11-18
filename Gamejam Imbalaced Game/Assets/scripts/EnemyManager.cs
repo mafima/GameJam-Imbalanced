@@ -23,7 +23,7 @@ public class EnemyManager : Photon.MonoBehaviour {
         deadPepegas = new Queue<GameObject>();
         pepegaParent = new GameObject("Pepegas").transform;
         //InvokeRepeating("PepegaTest", 0f, 7f);
-        InvokeRepeating("SpawnRandomEnemy", 0f, 18f);
+        InvokeRepeating("SpawnRandomEnemy", 10f, 20f);
 	}
 
     void SpawnRandomEnemy() {

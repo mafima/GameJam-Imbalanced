@@ -87,7 +87,10 @@ public class EnemyHealth : Photon.MonoBehaviour {
             isSinking = false;
             gameObject.SetActive(false);
             currentHealth = startingHealth;
+        } else {
+            Destroy(gameObject);
         }
+        
 	}
 
 	// The RPC function to start sink the enemy game object
