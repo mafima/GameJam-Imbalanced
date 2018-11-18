@@ -46,7 +46,7 @@ public class SceneCleaner : MonoBehaviour {
     }
 
     void DisableList(GameObject[] list) {
-        float dist = GetComponent<ConvictionController>().level * 25f;
+        float dist = GetComponent<ConvictionController>().level.Value * 25f;
         foreach (GameObject obj in list) {
             float xDist, yDist;
             xDist = Mathf.Abs(transform.position.x - obj.transform.position.x);
