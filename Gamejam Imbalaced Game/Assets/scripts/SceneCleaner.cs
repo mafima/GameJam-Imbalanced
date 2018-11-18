@@ -39,7 +39,10 @@ public class SceneCleaner : MonoBehaviour {
     }
 
     void Clean() {
-
+        DisableList(terrains);
+        DisableList(smallAssets);
+        DisableList(mediumAssets);
+        DisableList(bigAssets);
     }
 
     void DisableList(GameObject[] list) {
