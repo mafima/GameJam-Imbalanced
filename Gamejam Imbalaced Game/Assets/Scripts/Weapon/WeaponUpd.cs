@@ -21,6 +21,13 @@ public class WeaponUpd : Photon.MonoBehaviour {
 	void Update () {
 		if(weapon==null)return;
 		int id = weapon.id;
+		foreach(Transform child in onlineWeapons) if(child.gameObject.activeSelf)child.gameObject.SetActive(false);
+		foreach(Transform child in localWeapons) if(child.gameObject.activeSelf) child.gameObject.SetActive(false);
+		if (localWeapons.childCount>id)localWeapons.GetChild(id).gameObject.SetActive(true);
+		if (onlineWeapons.childCount>id)onlineWeapons.GetChild(id).gameObject.SetActive(true);
+	}
+	void oldweaponupdate(){
+		int id=weapon.id;
 		if(id != lastweapon.id){
 				//if(lastweapon.id>=localWeapons.childCount)lastweapon=null;
 				if(lastweapon && lastweapon.id>=0 && lastweapon.id < localWeapons.childCount){
@@ -33,6 +40,5 @@ public class WeaponUpd : Photon.MonoBehaviour {
 
 				lastweapon.id=id;
 		}
-		
 	}
 }

@@ -17,6 +17,8 @@ public Weapon weapon;
     Vector3 originalpos;
     Quaternion orginalrot;
 
+    Quaternion randomrot;
+    bool fire;
     // Called when script awake in editor
     void Awake() {
         gunParticles = GetComponent<ParticleSystem>();
@@ -33,11 +35,22 @@ public Weapon weapon;
         bool shooting = CrossPlatformInputManager.GetButton("Fire1");
 
         if (shooting && timer >= timeBetweenBullets && Time.timeScale != 0) {
-
-        Shoot();
+            
+            timeBetweenBullets = 1f/((float)weapon.AtkPerSec+0.000001f);
+            Shoot();
         }
 
         //anim.SetBool("Firing", shooting);
+    }
+    private void FixedUpdate()
+    {
+        if(fire){
+            FireMoveAndRot(2);
+            fire=false;
+        }else {
+            moveme.localPosition = Vector3.Lerp(moveme.localPosition,originalpos,0.5f);
+            moveme.localRotation = Quaternion.Slerp(moveme.localRotation,orginalrot,0.5f);
+        }
     }
 
     // Disable the shooting effects
@@ -48,32 +61,38 @@ public Weapon weapon;
     // Shoot!
     void Shoot() {
         // set weapon depending stuff:
-        timeBetweenBullets = 1f/((float)weapon.AtkPerSec+0.001f);
         range=weapon.range;
         timer = 0.0f;
         gunParticles.Stop();
         gunParticles.Play();
-        updateRecoil();
+        //recoil
+        randomrot=Random.rotation;
+        fire=true;
+        //StartCoroutine(updateRecoil());
     }
     IEnumerator updateRecoil (){
-        Quaternion randomrot=Random.rotation;
-        randomrot.y=Quaternion.Euler(0,0,0).y;
+        //randomrot.y=Quaternion.Euler(0,0,0).y;
 
-        moveme.localPosition-=Vector3.forward*weapon.damage;
-        moveme.localPosition-=Vector3.forward*weapon.damage*0.1f;
-        moveme.rotation = Quaternion.Slerp(moveme.rotation,randomrot,0.01f*weapon.damage/(weapon.damage+100));
-        yield return new WaitForSeconds(timeBetweenBullets/10f);
-        moveme.localPosition-=Vector3.forward*weapon.damage*0.1f;
-        moveme.rotation = Quaternion.Slerp(moveme.rotation,randomrot,0.01f*weapon.damage/(weapon.damage+100));
-        yield return new WaitForSeconds(timeBetweenBullets/10f);
+        //moveme.localPosition-=Vector3.forward*weapon.damage;
+        FireMoveAndRot(1);
+        yield return new WaitForSeconds(timeBetweenBullets*.1f);
+        FireMoveAndRot(1);
+        yield return new WaitForSeconds(timeBetweenBullets*.1f);
         for (int i =0;i<8;i++){
-            moveme.localPosition = Vector3.Lerp(moveme.localPosition,originalpos,0.1f);
-            moveme.rotation = Quaternion.Slerp(moveme.rotation,randomrot,0.01f*weapon.damage/(weapon.damage+100));
-            yield return new WaitForSeconds(timeBetweenBullets/10f);
+            moveme.localPosition = Vector3.Lerp(moveme.localPosition,originalpos,0.3f);
+            moveme.localRotation = Quaternion.Slerp(moveme.localRotation,orginalrot,0.3f);
+            yield return new WaitForSeconds(timeBetweenBullets*.1f);
         }
         moveme.localPosition=originalpos;
         moveme.localRotation=orginalrot;
         yield return null;
+    }
+    void FireMoveAndRot(){
+        FireMoveAndRot(1f);
+    }
+    void FireMoveAndRot(float power){
+        moveme.localPosition-=Vector3.forward*weapon.damage*0.01f*power;
+        moveme.localRotation = Quaternion.Slerp(moveme.localRotation,randomrot,power*0.1f*weapon.damage/(weapon.damage+200));
     }
 
 }
