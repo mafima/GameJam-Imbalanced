@@ -93,7 +93,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         int spawnIndex = Random.Range(0, spawnPoints.Length);
         player = PhotonNetwork.Instantiate(playerModel.name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
 
-        player.name = PhotonNetwork.player.NickName + Random.Range(1,10);
+        player.name = PhotonNetwork.player.NickName;
         player.GetComponent<PlayerHealth>().RespawnMe += StartSpawnProcess;
         player.GetComponent<PlayerHealth>().SendNetworkMessage += AddMessage;
 
