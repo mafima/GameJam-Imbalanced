@@ -6,7 +6,7 @@ using System.Collections;
 public class EnemyHealth : Photon.MonoBehaviour {
 
 	public int startingHealth = 10;
-	public IntVariable currentHealth;
+	int currentHealth;
 	public float sinkSpeed = 0.12f;
 	public AudioClip deathClip;
 	public AudioClip hurtClip;
@@ -28,7 +28,7 @@ public class EnemyHealth : Photon.MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();
 		capsuleCollider = GetComponent<CapsuleCollider>();
 		//ikControl = GetComponentInChildren<IKControl>();
-		currentHealth.Value = startingHealth;
+		currentHealth = startingHealth;
 	}
 
 	// Update is called once per frame
@@ -42,14 +42,14 @@ public class EnemyHealth : Photon.MonoBehaviour {
 	// The RPC function to let the player take damage
 	[PunRPC]
 	public void TakeDamage(int amount, string enemyName) {
-		currentHealth.Value -= amount;
+		currentHealth -= amount;
 
 		//anim.SetTrigger("IsHurt");
 
 		audioSource.clip = hurtClip;
 		audioSource.Play();
 
-		if (currentHealth.Value <= 0) {
+		if (currentHealth <= 0) {
             photonView.RPC("Death", PhotonTargets.All, enemyName);
 		}
 	}
@@ -86,7 +86,7 @@ public class EnemyHealth : Photon.MonoBehaviour {
             GetComponent<Rigidbody>().isKinematic = false;
             isSinking = false;
             gameObject.SetActive(false);
-            currentHealth.Value = startingHealth;
+            currentHealth = startingHealth;
         }
 	}
 
@@ -102,9 +102,9 @@ public class EnemyHealth : Photon.MonoBehaviour {
 	// Synchronize data on the network
 	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 		if (stream.isWriting) {
-			stream.SendNext(currentHealth.Value);
+			stream.SendNext(currentHealth);
 		} else {
-			currentHealth.Value = (int)stream.ReceiveNext();
+			currentHealth = (int)stream.ReceiveNext();
 		}
 	}
 
