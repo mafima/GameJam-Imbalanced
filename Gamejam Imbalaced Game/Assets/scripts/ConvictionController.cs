@@ -18,11 +18,11 @@ public class ConvictionController : Photon.MonoBehaviour {
     private Color sliderBgColor = new Color(0.674f, 0.937f, 1f);
     private Color sliderGlowColor = new Color(0.968f, 0.986f, 0.219f);
 
-    public int level = 1;
+    public IntVariable level;
     private int goodLvl = 1;
     private int badLvl = 1;
 
-    [SerializeField] int bonusMaxHP = 25;
+    [SerializeField] IntVariable bonusMaxHP;
 
     bool transformed = false;
     Queue<float> toBeTransformed = new Queue<float>();
@@ -33,6 +33,7 @@ public class ConvictionController : Photon.MonoBehaviour {
             enabled = false;
             return;
         }
+        level.Value=1;
 
         goodSlider.maxValue = 1f;
         goodSlider.value = 0f;
@@ -58,7 +59,7 @@ public class ConvictionController : Photon.MonoBehaviour {
     private void RedrawBars() {
         Vector2 temp = new Vector2(goodness, badness);
         temp.Normalize();
-        float str = (goodness + badness) / (level * 100f);
+        float str = (goodness + badness) / (level.Value * 100f);
         goodSlider.value = temp.x * str;
         badSlider.value = temp.y * str;
         if (goodSlider.value >= 1f) {
@@ -70,14 +71,14 @@ public class ConvictionController : Photon.MonoBehaviour {
 
     private void LevelUp(bool good) {
         goodness = badness = 0;
-        level++;
-        levelText.text = level.ToString();
+        level.Value++;
+        levelText.text = level.Value.ToString();
         transform.localScale *= 1.5f;
         GetComponent<FirstPersonController>().m_RunSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
-        GetComponent<PlayerHealth>().GainMaxHealth( (level - 1) * bonusMaxHP);
-        RenderSettings.fogEndDistance += level * 10;
+        GetComponent<PlayerHealth>().GainMaxHealth( (level.Value - 1) * bonusMaxHP.Value);
+        RenderSettings.fogEndDistance += level.Value * 10;
 
         if (good) {
             badLvl++;

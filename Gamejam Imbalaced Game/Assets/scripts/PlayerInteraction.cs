@@ -13,12 +13,11 @@ public class PlayerInteraction : Photon.MonoBehaviour {
             return;
         }
         cc = GetComponent<ConvictionController>();
-
     }
 
     void Update () {
         if (Input.GetMouseButtonDown(1)) {
-            RaycastHit[] hits = Physics.RaycastAll(mainPlayerCam.position, mainPlayerCam.forward, cc.level * 5f);
+            RaycastHit[] hits = Physics.RaycastAll(mainPlayerCam.position, mainPlayerCam.forward, cc.level.Value * 5f);
             foreach (RaycastHit hit in hits) {
                 if (hit.transform.GetComponent(typeof(Interactable))) {
                     hit.transform.GetComponent<Interactable>().Interact(gameObject);
