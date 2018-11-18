@@ -1,10 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TerrainManager : Photon.MonoBehaviour {
 
+    [SerializeField] Transform loadingParent;
+    Slider loadingSlider;
+
     [SerializeField] int worldSize = 10;
+    [SerializeField] int smallDensity = 15;
+    [SerializeField] int mediumDensity = 5;
+    [SerializeField] int bigDensity = 1;
     GameObject[,] ground;
     public GameObject groundPrefab;
     public GameObject[] smallAssets;
@@ -15,6 +22,9 @@ public class TerrainManager : Photon.MonoBehaviour {
 
     // Use this for initialization
     public void Make() {
+        loadingSlider = loadingParent.GetComponentInChildren<Slider>();
+        loadingParent.gameObject.SetActive(true);
+        loadingSlider.value = 0;
         StartCoroutine(Making());
     }
 
@@ -25,13 +35,14 @@ public class TerrainManager : Photon.MonoBehaviour {
         bigAssetsT = new GameObject("BigAssets").transform;
         ground = new GameObject[worldSize, worldSize];
         Transform terrain = new GameObject("Terrains").GetComponent<Transform>();
+
+        loadingSlider.maxValue = Mathf.Pow(worldSize, 2);
         for (int i = 0; i < worldSize; i++) {
             for (int j = 0; j < worldSize; j++) {
                 ground[i, j] = Instantiate(groundPrefab, new Vector3((i - worldSize / 2) * 500, 0f, (j - worldSize / 2) * 500), groundPrefab.transform.rotation, terrain);
                 Vector2 from;
                 from = new Vector2((i - worldSize / 2) * 500 - 250, (j - worldSize / 2) * 500 - 250);
-                Debug.Log("from:" + from);
-                int amount = Random.Range(7, 25);
+                int amount = Random.Range(smallDensity, 2 * smallDensity);
                 for (int k = 0; k < amount; k++) {
                     int index = Random.Range(0, smallAssets.Length - 1);
                     Vector2 pos = from;
@@ -40,7 +51,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     photonView.RPC("SpawnNewObject", PhotonTargets.All, smallAssets[index].name, pos, 0);
                 }
 
-                amount = Random.Range(4, 15);
+                amount = Random.Range(mediumDensity, mediumDensity);
                 for (int k = 0; k < amount; k++) {
                     int index = Random.Range(0, mediumAssets.Length - 1);
                     Vector2 pos = from;
@@ -49,7 +60,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     photonView.RPC("SpawnNewObject", PhotonTargets.All, mediumAssets[index].name, pos, 1);
                 }
 
-                amount = Random.Range(1, 5);
+                amount = Random.Range(bigDensity, bigDensity);
                 for (int k = 0; k < amount; k++) {
                     int index = Random.Range(0, bigAssets.Length - 1);
                     Vector2 pos = from;
@@ -58,6 +69,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     photonView.RPC("SpawnNewObject", PhotonTargets.All, bigAssets[index].name, pos, 2);
                 }
 
+                loadingSlider.value++;
                 yield return new WaitForSeconds(0.01f);
             }
         }
@@ -68,6 +80,7 @@ public class TerrainManager : Photon.MonoBehaviour {
             player.transform.position = dest;
             player.GetComponent<SceneCleaner>().StartCleaning();
         }
+        loadingParent.gameObject.SetActive(false);
 	}
 
     [PunRPC]

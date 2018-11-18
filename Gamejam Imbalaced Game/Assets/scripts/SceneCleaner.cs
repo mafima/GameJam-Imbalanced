@@ -14,11 +14,14 @@ public class SceneCleaner : MonoBehaviour {
     int counter = 0;
 
 	public void StartCleaning () {
-        InvokeRepeating("Recurrent", 0f, 3f);
         terrainParent = GameObject.Find("Terrains").transform;
         smallParent = GameObject.Find("SmallAssets").transform;
         medParent = GameObject.Find("MediumAssets").transform;
         bigParent = GameObject.Find("BigAssets").transform;
+        InvokeRepeating("Recurrent", 0f, 5f);
+        Recurrent();
+        Recurrent();
+        Recurrent();
     }
 
     void Recurrent() {
@@ -78,10 +81,10 @@ public class SceneCleaner : MonoBehaviour {
     void DisableList(GameObject[] list) {
         float dist = GetComponent<ConvictionController>().level.Value * cleaningDistance;
         foreach (GameObject obj in list) {
-            float xDist, yDist;
+            float xDist, zDist;
             xDist = Mathf.Abs(transform.position.x - obj.transform.position.x);
-            yDist = Mathf.Abs(transform.position.y - obj.transform.position.y);
-            if (xDist + yDist > dist) {
+            zDist = Mathf.Abs(transform.position.z - obj.transform.position.z);
+            if (xDist + zDist > dist) {
                 obj.SetActive(false);
             }
         }
