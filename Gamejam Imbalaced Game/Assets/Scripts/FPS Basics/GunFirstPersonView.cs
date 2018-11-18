@@ -19,6 +19,8 @@ public Weapon weapon;
 
     Quaternion randomrot;
     bool fire;
+
+    public GameEvent shootevent;
     // Called when script awake in editor
     void Awake() {
         gunParticles = GetComponent<ParticleSystem>();
@@ -68,6 +70,7 @@ public Weapon weapon;
         //recoil
         randomrot=Random.rotation;
         fire=true;
+        shootevent.Raise();
         //StartCoroutine(updateRecoil());
     }
     IEnumerator updateRecoil (){

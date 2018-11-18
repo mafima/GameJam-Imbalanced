@@ -8,7 +8,7 @@ public class Weapon : ScriptableObject {
 	public int id;
 	public float damage=20, AtkPerSec=5, range=100;
 	public AudioClip[] firesounds;
-	public GameObject look;
+	public GameObject SpawnThisOnShot;
 
 	public void setWeapon(Weapon newWeapon){
 		id=newWeapon.id;
@@ -16,6 +16,6 @@ public class Weapon : ScriptableObject {
 		AtkPerSec=newWeapon.AtkPerSec;
 		range=newWeapon.range;
 		firesounds=newWeapon.firesounds;
-		look=newWeapon.look;
+		SpawnThisOnShot=newWeapon.SpawnThisOnShot;
 	}
 }
