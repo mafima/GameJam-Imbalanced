@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour {
 			SearchTarget ();
 		}
 
-		enemyRb.AddForce((target.position.x - enemyTf.position.x), 0, (target.position.z - enemyTf.position.z));
+		enemyRb.AddForce((target.position.x - enemyTf.position.x), (target.position.y + 0.75f * target.localScale.y - enemyTf.position.y), (target.position.z - enemyTf.position.z));
 	
 	}
 
