@@ -8,6 +8,7 @@ public class TerrainManager : Photon.MonoBehaviour {
     [SerializeField] Transform loadingParent;
     Slider loadingSlider;
 
+    public static int boundaries;
     [SerializeField] int worldSize = 10;
     [SerializeField] int smallDensity = 15;
     [SerializeField] int mediumDensity = 5;
@@ -25,6 +26,7 @@ public class TerrainManager : Photon.MonoBehaviour {
         mediumAssetsT = new GameObject("MediumAssets").transform;
         bigAssetsT = new GameObject("BigAssets").transform;
         terrainT = new GameObject("Terrains").transform;
+        boundaries = ((worldSize - 1) / 2) * 500;
     }
 
     public void Make() {

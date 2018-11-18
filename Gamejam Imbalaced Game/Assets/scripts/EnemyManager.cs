@@ -23,12 +23,15 @@ public class EnemyManager : Photon.MonoBehaviour {
         deadPepegas = new Queue<GameObject>();
         pepegaParent = new GameObject("Pepegas").transform;
         //InvokeRepeating("PepegaTest", 0f, 7f);
+        InvokeRepeating("SpawnRandomEnemy", 5f, 7f);
 	}
 
     void SpawnRandomEnemy() {
         Transform p = playerTf[Random.Range(0, playerTf.Length - 1)];
         if (Random.value < 0.7f) {
-            StartCoroutine(SpawnSwarm("Pepega", 15, new Vector3(p.position.x + Random.Range(-25f, 25f), p.position.y, p.position.z + Random.Range(-25f, 25f))));
+            StartCoroutine(SpawnSwarm("Pepega", 25, new Vector3(p.position.x + Random.Range(-25f, 25f), p.position.y, p.position.z + Random.Range(-25f, 25f))));
+        } else {
+            StartCoroutine(SpawnSwarm("Knuckles", 9, new Vector3(p.position.x + Random.Range(-25f, 25f), p.position.y, p.position.z + Random.Range(-25f, 25f))));
         }
     }
 
