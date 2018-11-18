@@ -13,11 +13,14 @@ public class EnemyManager : Photon.MonoBehaviour {
 
     Transform pepegaParent;
 
+    int enemyPhotonIds = 100;
+
 	// Use this for initialization
 	void Start () {
+        UpdatePlayers();
         deadPepegas = new Queue<GameObject>();
         pepegaParent = new GameObject("Pepegas").transform;
-		InvokeRepeating ("PepegaTest", 0f, 7f);
+        InvokeRepeating("PepegaTest", 0f, 7f);
 	}
 	
 	// Update is called once per frame
@@ -40,7 +43,23 @@ public class EnemyManager : Photon.MonoBehaviour {
 
 	[PunRPC]
 	void SpawnEnemy(string obj, Vector3 pos) {
-		Instantiate(Resources.Load("Enemies/" + obj), pos, Quaternion.identity, pepegaParent);
+        switch (obj) {
+            case "Pepega":
+                if (deadPepegas.Count > 0) {
+                    GameObject spawn = deadPepegas.Dequeue();
+                    spawn.transform.position = pos;
+                    spawn.SetActive(true);
+                    return;
+                }
+                break;
+            default:
+                break;
+        }
+        GameObject temp = (GameObject)Instantiate(Resources.Load("Enemies/" + obj), pos, Quaternion.identity, pepegaParent);
+        temp.GetComponent<PhotonView>().viewID = enemyPhotonIds++;
+        if (enemyPhotonIds>998) {
+            enemyPhotonIds = 100;
+        }
 	}
 
 	public static void UpdatePlayers() {

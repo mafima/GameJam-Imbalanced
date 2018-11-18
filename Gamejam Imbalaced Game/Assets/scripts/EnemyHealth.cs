@@ -17,7 +17,6 @@ public class EnemyHealth : Photon.MonoBehaviour {
 	private AudioSource audioSource;
 	private CapsuleCollider capsuleCollider;
 	//private IKControl ikControl;
-	private bool isDead;
 	private bool isSinking;
 	private bool damaged;
 	//PlayerScore score;
@@ -43,10 +42,7 @@ public class EnemyHealth : Photon.MonoBehaviour {
 	// The RPC function to let the player take damage
 	[PunRPC]
 	public void TakeDamage(int amount, string enemyName) {
-		if (isDead) return;
-
 		currentHealth.Value -= amount;
-        
 
 		//anim.SetTrigger("IsHurt");
 
@@ -54,14 +50,13 @@ public class EnemyHealth : Photon.MonoBehaviour {
 		audioSource.Play();
 
 		if (currentHealth.Value <= 0) {
-			Death(enemyName);
+            photonView.RPC("Death", PhotonTargets.All, enemyName);
 		}
 	}
 
 	// The RPC function for enemy death
 	[PunRPC]
 	void Death(string enemyName) {
-		isDead = true;
 		capsuleCollider.isTrigger = true;
 
 		//anim.SetTrigger("IsDead");
@@ -87,6 +82,9 @@ public class EnemyHealth : Photon.MonoBehaviour {
 		yield return new WaitForSeconds(time);
         if (transform.parent.name.Equals("Pepegas")) {
             EnemyManager.deadPepegas.Enqueue(gameObject);
+            capsuleCollider.isTrigger = false;
+            GetComponent<Rigidbody>().isKinematic = false;
+            isSinking = false;
             gameObject.SetActive(false);
         }
 	}
