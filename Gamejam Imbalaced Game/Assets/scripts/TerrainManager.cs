@@ -18,28 +18,27 @@ public class TerrainManager : Photon.MonoBehaviour {
     public GameObject[] mediumAssets;
     public GameObject[] bigAssets;
 
-    Transform smallAssetsT, mediumAssetsT, bigAssetsT;
+    Transform smallAssetsT, mediumAssetsT, bigAssetsT, terrainT;
 
-    // Use this for initialization
+    private void Start() {
+        smallAssetsT = new GameObject("SmallAssets").transform;
+        mediumAssetsT = new GameObject("MediumAssets").transform;
+        bigAssetsT = new GameObject("BigAssets").transform;
+        terrainT = new GameObject("Terrains").transform;
+    }
+
     public void Make() {
-        loadingSlider = loadingParent.GetComponentInChildren<Slider>();
-        loadingParent.gameObject.SetActive(true);
-        loadingSlider.value = 0;
+        photonView.RPC("InitializeLoader", PhotonTargets.All);
         StartCoroutine(Making());
     }
 
 
     IEnumerator Making() { 
-        smallAssetsT = new GameObject("SmallAssets").transform;
-        mediumAssetsT = new GameObject("MediumAssets").transform;
-        bigAssetsT = new GameObject("BigAssets").transform;
-        ground = new GameObject[worldSize, worldSize];
-        Transform terrain = new GameObject("Terrains").GetComponent<Transform>();
 
-        loadingSlider.maxValue = Mathf.Pow(worldSize, 2);
         for (int i = 0; i < worldSize; i++) {
             for (int j = 0; j < worldSize; j++) {
-                ground[i, j] = Instantiate(groundPrefab, new Vector3((i - worldSize / 2) * 500, 0f, (j - worldSize / 2) * 500), groundPrefab.transform.rotation, terrain);
+                //Instantiate(groundPrefab, new Vector3((i - worldSize / 2) * 500, 0f, (j - worldSize / 2) * 500), groundPrefab.transform.rotation, terrain);
+                photonView.RPC("SpawnNewObject", PhotonTargets.All, "Ground", new Vector2((i - worldSize / 2) * 500, (j - worldSize / 2) * 500), 3);
                 Vector2 from;
                 from = new Vector2((i - worldSize / 2) * 500 - 250, (j - worldSize / 2) * 500 - 250);
                 int amount = Random.Range(smallDensity, 2 * smallDensity);
@@ -69,7 +68,7 @@ public class TerrainManager : Photon.MonoBehaviour {
                     photonView.RPC("SpawnNewObject", PhotonTargets.All, bigAssets[index].name, pos, 2);
                 }
 
-                loadingSlider.value++;
+                photonView.RPC("LoadedPart", PhotonTargets.All);
                 yield return new WaitForSeconds(0.01f);
             }
         }
@@ -80,12 +79,32 @@ public class TerrainManager : Photon.MonoBehaviour {
             player.transform.position = dest;
             player.GetComponent<SceneCleaner>().StartCleaning();
         }
-        loadingParent.gameObject.SetActive(false);
+        photonView.RPC("FinishedLoading", PhotonTargets.All);
 	}
 
     [PunRPC]
+    void InitializeLoader() {
+
+        loadingSlider = loadingParent.GetComponentInChildren<Slider>();
+        loadingParent.gameObject.SetActive(true);
+        loadingSlider.value = 0;
+        loadingSlider.maxValue = Mathf.Pow(worldSize, 2);
+    }
+
+    [PunRPC]
+    void LoadedPart() {
+        loadingSlider.value++;
+    }
+
+    [PunRPC]
+    void FinishedLoading() {
+
+        loadingParent.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
     void SpawnNewObject(string obj, Vector2 pos, int size) {
-        Transform parent = size == 0 ? smallAssetsT : size == 1 ? mediumAssetsT : bigAssetsT;
+        Transform parent = size == 0 ? smallAssetsT : size == 1 ? mediumAssetsT : size == 2 ? bigAssetsT : terrainT;
         Instantiate(Resources.Load(obj), new Vector3(pos.x, 0f, pos.y), Quaternion.identity, parent);
     }
 }
