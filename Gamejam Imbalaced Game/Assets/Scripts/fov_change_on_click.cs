@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class fov_change_on_click : MonoBehaviour {
 
+    public Weapon weapon;
     float fov,fovadd;
     [Range(0, 170f)]
     public float fovstart = 60f;

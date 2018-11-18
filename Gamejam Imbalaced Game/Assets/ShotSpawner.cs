@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponDisplay : MonoBehaviour {
-
+public class ShotSpawner : Photon.PunBehaviour {
 	public Weapon weapon;
-
 	public Transform spawnhere;
 	// Use this for initialization
 	void Start () {
-		if (spawnhere.childCount==0)Instantiate(weapon.look,spawnhere.position,Quaternion.identity,spawnhere);
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+	public void spawn(){
+		if(weapon.SpawnThisOnShot) spawnshot();
+	}
+	[PunRPC]
+	void spawnshot(){
+		PhotonNetwork.Instantiate(weapon.SpawnThisOnShot.name,spawnhere.position,spawnhere.rotation,0);
 	}
 }
