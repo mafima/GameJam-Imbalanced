@@ -44,11 +44,10 @@ public class EnemyKnuckles : MonoBehaviour {
 		if (target == null) {
 			EnemyManager.UpdatePlayers();
 			SearchTarget ();
-			transform.LookAt (target);
-			transform.rotation = Quaternion.Euler (0, transform.rotation.y, 0);
-		}
+        }
+        transform.LookAt(target);
 
-		enemyRb.AddForce((target.position.x - enemyTf.position.x), canFly ? (target.position.y + 0.75f * target.localScale.y - enemyTf.position.y) : 0f, (target.position.z - enemyTf.position.z));
+        enemyRb.AddForce(0.7f* new Vector3((target.position.x - enemyTf.position.x), canFly ? (target.position.y + 0.75f * target.localScale.y - enemyTf.position.y) : 0f, (target.position.z - enemyTf.position.z)));
 
 	}
 
