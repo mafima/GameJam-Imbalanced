@@ -79,7 +79,11 @@ public class GunShooting : Photon.MonoBehaviour {
                     shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, damagePerShot, PhotonNetwork.player.NickName);
                     PhotonNetwork.Instantiate("impacts/impactFlesh", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
                     break;
-                case "Metal":
+                case "Enemy":
+                    shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, damagePerShot, gameObject.name);
+                    PhotonNetwork.Instantiate("impacts/impactFlesh", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
+                    break;
+                    case "Metal":
                     PhotonNetwork.Instantiate("impacts/impactMetal", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
                     break;
                 case "Glass":
