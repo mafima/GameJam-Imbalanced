@@ -86,6 +86,7 @@ public class EnemyHealth : Photon.MonoBehaviour {
             GetComponent<Rigidbody>().isKinematic = false;
             isSinking = false;
             gameObject.SetActive(false);
+            currentHealth.Value = startingHealth;
         }
 	}
 
