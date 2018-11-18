@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TerrainManager : Photon.MonoBehaviour {
 
-    int worldSize = 10;
+    [SerializeField] int worldSize = 10;
     GameObject[,] ground;
     public GameObject groundPrefab;
     public GameObject[] smallAssets;
@@ -66,6 +66,7 @@ public class TerrainManager : Photon.MonoBehaviour {
             Vector3 dest = player.transform.position;
             dest.y = 10f;
             player.transform.position = dest;
+            player.GetComponent<SceneCleaner>().StartCleaning();
         }
 	}
 
