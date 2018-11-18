@@ -93,6 +93,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         int spawnIndex = Random.Range(0, spawnPoints.Length);
         player = PhotonNetwork.Instantiate(playerModel.name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
 
+        player.name = PhotonNetwork.player.NickName + Random.Range(1,10);
         player.GetComponent<PlayerHealth>().RespawnMe += StartSpawnProcess;
         player.GetComponent<PlayerHealth>().SendNetworkMessage += AddMessage;
 
@@ -125,6 +126,8 @@ public class NetworkManager : Photon.MonoBehaviour {
     void OnPhotonPlayerDisconnected(PhotonPlayer other) {
         if (photonView.isMine)
             AddMessage("Player " + other.NickName + " Left Game.");
+
+		EnemyManager.UpdatePlayers();
     }
 
     // Synchronize data on the network
