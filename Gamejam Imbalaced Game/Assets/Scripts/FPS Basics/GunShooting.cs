@@ -40,7 +40,7 @@ public class GunShooting : Photon.MonoBehaviour {
                 gunAudio.clip = (weapn && weapn.firesounds.Length > 0) ? 
                 weapn.firesounds[Random.Range(0,weapn.firesounds.Length)] : standardSound;
                 GetComponent<PhotonView>().RPC("Shoot", PhotonTargets.All);
-                if(anim.GetBool("Firing"))anim.SetTrigger("FiringTrigger");
+                //anim.SetTrigger("FiringTrigger");
             }
 
             anim.SetBool("Firing", shooting);
