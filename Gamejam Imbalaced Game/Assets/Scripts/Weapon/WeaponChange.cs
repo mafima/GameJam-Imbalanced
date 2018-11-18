@@ -6,13 +6,19 @@ public class WeaponChange : Photon.MonoBehaviour {
 
 	public Weapon weapon;
 	public WeaponSystem weaponSystem;
+
+	public bool on;
 	// Use this for initialization
 	void Start () {
+		on=false;
 		if(!photonView.isMine) this.enabled=false;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if(Input.GetKeyDown("o")) on=true;
+		if(!on)return;
+
 		if(Input.GetKeyDown("1")){
 			weapon.id=0;
 			weapon.setWeapon(weaponSystem.allweapons[weapon.id]);
