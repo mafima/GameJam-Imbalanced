@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour {
 	void FixedUpdate() {
 	
 		if (target == null) {
+			EnemyManager.UpdatePlayers();
 			SearchTarget ();
 		}
 
