@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
+    [SerializeField] bool canFly;
+
 	Transform enemyTf;
 	Rigidbody enemyRb;
 
@@ -40,7 +42,7 @@ public class Enemy : MonoBehaviour {
 			SearchTarget ();
 		}
 
-		enemyRb.AddForce((target.position.x - enemyTf.position.x), (target.position.y + 0.75f * target.localScale.y - enemyTf.position.y), (target.position.z - enemyTf.position.z));
+        enemyRb.AddForce((target.position.x - enemyTf.position.x), canFly ? (target.position.y + 0.75f * target.localScale.y - enemyTf.position.y) : 0f, (target.position.z - enemyTf.position.z));
 	
 	}
 
