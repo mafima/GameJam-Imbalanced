@@ -7,6 +7,8 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class ConvictionController : Photon.MonoBehaviour {
 
+    public FloatVar dmgMult;
+
     private float transformTime = 2f;
 
     private int goodness = 0;
@@ -78,6 +80,7 @@ public class ConvictionController : Photon.MonoBehaviour {
         GetComponent<FirstPersonController>().m_WalkSpeed *= 1.35f;
         GetComponent<FirstPersonController>().m_JumpSpeed *= 1.35f;
         GetComponent<PlayerHealth>().GainMaxHealth( (level.Value - 1) * bonusMaxHP.Value);
+        dmgMult.Value += (level.Value - 1) * (bonusMaxHP.Value * 0.9f);
         RenderSettings.fogEndDistance += level.Value * 10;
 
         if (good) {
