@@ -11,10 +11,8 @@ public class WeaponUpd : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PhotonView view = GetComponent<PhotonView>();
-		if(view && !view.isMine && weapon ==null) this.enabled=false;
-		else{
-			//lastweapon=weaponSystem.weapon;
-		}
+		if(view && !view.isMine) this.enabled=false;
+		if(weapon==null)this.enabled=false;
 	}
 	
 	// Update is called once per frame

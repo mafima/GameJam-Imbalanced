@@ -52,6 +52,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        Debug.Log("my health is" + currentHealth.Value);
         if (damaged) {
             damageImage.color = flashColour;
         } else {
@@ -77,6 +78,7 @@ public class PlayerHealth : Photon.MonoBehaviour {
         if (isDead) return;
         if (invincible) return;
 
+        
         currentHealth.Value -= amount;
 
         if (photonView.isMine) {

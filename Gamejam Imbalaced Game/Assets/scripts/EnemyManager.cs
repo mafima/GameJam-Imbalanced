@@ -22,8 +22,22 @@ public class EnemyManager : Photon.MonoBehaviour {
         UpdatePlayers();
         deadPepegas = new Queue<GameObject>();
         pepegaParent = new GameObject("Pepegas").transform;
-        InvokeRepeating("PepegaTest", 0f, 7f);
+        //InvokeRepeating("PepegaTest", 0f, 7f);
 	}
+
+    void SpawnRandomEnemy() {
+        Transform p = playerTf[Random.Range(0, playerTf.Length - 1)];
+        if (Random.value < 0.7f) {
+            StartCoroutine(SpawnSwarm("Pepega", 15, new Vector3(p.position.x + Random.Range(-25f, 25f), p.position.y, p.position.z + Random.Range(-25f, 25f))));
+        }
+    }
+
+    IEnumerator SpawnSwarm(string name, int count, Vector3 spawnpoint) {
+        for (int i = 0; i < count; i++) {
+            photonView.RPC("SpawnEnemy", PhotonTargets.All, name, spawnpoint);
+            yield return new WaitForSeconds(1f / count);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -5,19 +5,20 @@ using UnityEngine;
 public class WeaponSystem : Photon.MonoBehaviour {
 
 	public Weapon weapon;
-	//public int id;
+	public int id;
 
 	public Weapon[] allweapons;
 
 	// Use this for initialization
 	void Start () {
-		if(photonView.isMine==false) this.enabled=false;
+		//if(!photonView.isMine) this.enabled=false;
+		if (!PhotonNetwork.isMasterClient) return;
+		int playercount = PhotonNetwork.playerList.Length;
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		
 		/*
 		if(Input.GetKeyDown(KeyCode.E) && (weapon.id+1) < allweapons.Length){//Input.mouseScrollDelta.y > .1f
 			if((weapon.id+1) < allweapons.Length) weapon.id++;
@@ -34,7 +35,7 @@ public class WeaponSystem : Photon.MonoBehaviour {
         if (stream.isWriting) {
             stream.SendNext(weapon.id);
         } else if (stream.isReading){
-            weapon.id = (int) stream.ReceiveNext();
+            id = (int) stream.ReceiveNext();
 		}
     }
 }
