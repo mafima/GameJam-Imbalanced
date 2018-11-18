@@ -33,6 +33,10 @@ public class EnemyKnuckles : MonoBehaviour {
 		}
 
 		target = EnemyManager.playerTf [nearestPlayer];
+
+		//enemyTf.rotation.Set (target.position.x - enemyTf.position.x, enemyTf.rotation.y, target.position.z - enemyTf.position.z, );
+		//enemyTf.rotation.y = 
+
 	}
 
 	void FixedUpdate() {
@@ -40,6 +44,8 @@ public class EnemyKnuckles : MonoBehaviour {
 		if (target == null) {
 			EnemyManager.UpdatePlayers();
 			SearchTarget ();
+			transform.LookAt (target);
+			transform.rotation = Quaternion.Euler (0, transform.rotation.y, 0);
 		}
 
 		enemyRb.AddForce((target.position.x - enemyTf.position.x), canFly ? (target.position.y + 0.75f * target.localScale.y - enemyTf.position.y) : 0f, (target.position.z - enemyTf.position.z));
